@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人簡介 | Personal Profile</title>
+    <meta name="description" content="台南應用科技大學學生個人簡介網頁，展示個人資訊、興趣專長與自我介紹。">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #fdf4f7;
+            --bg-gradient: radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.45) 0%, rgba(255, 235, 240, 0.7) 40%, rgba(230, 240, 255, 0.6) 100%);
+            --card-bg: rgba(255, 255, 255, 0.78);
+            --card-border: rgba(255, 255, 255, 0.9);
+            --card-shadow: 0 20px 45px -12px rgba(236, 72, 153, 0.16), 0 0 1px 1px rgba(255, 255, 255, 0.8);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+
+            /* Colorful Palette preserving original rainbow elements */
+            --accent-name: #ff3366;
+            /* 紅/粉紅 (原 red) */
+            --accent-zodiac: #ff8c00;
+            /* 橘黃 (原 orange) */
+            --accent-education: #eab308;
+            /* 金黃 (原 yellow) */
+            --accent-hobby: #10b981;
+            /* 翠綠 (原 green) */
+            --accent-skill: #0284c7;
+            /* 湛藍 (原 blue) */
+            --accent-bio: #8b5cf6;
+            /* 典雅紫 (原 purple) */
+            --accent-school: #ec4899;
+            /* 桃紅 */
+
+            --card-item-bg: rgba(255, 255, 255, 0.68);
+            --card-item-hover: rgba(255, 255, 255, 0.95);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-full: 9999px;
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #0b0f19;
+            --bg-gradient: radial-gradient(circle at 20% 20%, rgba(88, 28, 135, 0.35) 0%, rgba(11, 15, 25, 0.95) 50%, rgba(157, 23, 77, 0.25) 100%);
+            --card-bg: rgba(22, 28, 45, 0.75);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-light: #64748b;
+
+            --card-item-bg: rgba(30, 41, 59, 0.55);
+            --card-item-hover: rgba(51, 65, 85, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: var(--bg-base);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.25rem 2rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.3s ease;
+        }
+
+        /* Ambient Glowing Background Orbs */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(85px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            animation: floatOrb 18s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(255, 140, 180, 0.45) 0%, rgba(255, 182, 193, 0) 70%);
+            top: -120px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(147, 197, 253, 0) 70%);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -6s;
+        }
+
+        .orb-3 {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, rgba(254, 215, 170, 0) 70%);
+            top: 45%;
+            right: 12%;
+            animation-delay: -11s;
+        }
+
+        @keyframes floatOrb {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(35px, 25px) scale(1.08);
+            }
+
+            100% {
+                transform: translate(-25px, 40px) scale(0.95);
+            }
+        }
+
+        /* Top Action Bar */
+        .top-bar {
+            position: fixed;
+            top: 1rem;
+            right: 1.25rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            padding: 0.35rem 0.55rem;
+            border-radius: var(--radius-full);
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-action {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .btn-action:hover {
+            background: rgba(125, 125, 125, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* Profile Card */
+        .profile-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 820px;
+            margin: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            padding: 2.75rem 2.5rem 2rem;
+            animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(28px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header Section */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 2.2rem;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 1.4rem;
+            cursor: pointer;
+        }
+
+        .avatar-glow-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff3366, #ff8c00, #eab308, #10b981, #0284c7, #8b5cf6);
+            background-size: 300% 300%;
+            animation: ringShimmer 7s ease infinite;
+            filter: blur(5px);
+            opacity: 0.75;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-container:hover .avatar-glow-ring {
+            opacity: 1;
+            filter: blur(9px);
+            inset: -6px;
+        }
+
+        @keyframes ringShimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .avatar-image {
+            position: relative;
+            width: 136px;
+            height: 136px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: #f8fafc;
+        }
+
+        .avatar-container:hover .avatar-image {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 6px;
+            right: 8px;
+            background: #10b981;
+            border: 3px solid var(--card-bg);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            animation: pulseDot 2.5s infinite;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
+            }
+        }
+
+        /* H1 Heading */
+        .profile-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+            background: linear-gradient(135deg, #e11d48 0%, #ec4899 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .profile-tagline {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+
+        .profile-tagline::before,
+        .profile-tagline::after {
+            content: '';
+            height: 1px;
+            width: 28px;
+            background: currentColor;
+            opacity: 0.3;
+        }
+
+        .edit-tip {
+            margin-top: 0.6rem;
+            font-size: 0.74rem;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(125, 125, 125, 0.08);
+            padding: 0.22rem 0.7rem;
+            border-radius: var(--radius-full);
+            user-select: none;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.15rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .info-card {
+            background: var(--card-item-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.4rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-color, #ec4899);
+            border-radius: 4px 0 0 4px;
+            opacity: 0.9;
+            transition: width 0.25s ease;
+        }
+
+        .info-card:hover {
+            background: var(--card-item-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-card:hover::before {
+            width: 6px;
+        }
+
+        .card-header-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .card-icon-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            background: color-mix(in srgb, var(--accent-color) 14%, transparent);
+            color: var(--accent-color);
+            flex-shrink: 0;
+        }
+
+        .card-field-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 0.02em;
+        }
+
+        .card-content-value {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-main);
+            padding: 0.3rem 0.5rem;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            min-height: 1.9rem;
+            outline: none;
+            word-break: break-word;
+        }
+
+        .card-content-value[contenteditable="true"]:hover {
+            background: rgba(125, 125, 125, 0.08);
+            cursor: text;
+        }
+
+        .card-content-value[contenteditable="true"]:focus {
+            background: rgba(125, 125, 125, 0.12);
+            outline: 2px solid var(--accent-color);
+        }
+
+        /* Palette mapping for the 6 items */
+        .item-name {
+            --accent-color: var(--accent-name);
+        }
+
+        .item-zodiac {
+            --accent-color: var(--accent-zodiac);
+        }
+
+        .item-education {
+            --accent-color: var(--accent-education);
+        }
+
+        .item-hobby {
+            --accent-color: var(--accent-hobby);
+        }
+
+        .item-skill {
+            --accent-color: var(--accent-skill);
+        }
+
+        .item-bio {
+            --accent-color: var(--accent-bio);
+            grid-column: span 2;
+        }
+
+        .item-bio .card-content-value {
+            line-height: 1.75;
+            font-size: 1rem;
+        }
+
+        /* School Links Section */
+        .school-links-container {
+            margin-top: 1.6rem;
+            padding-top: 1.6rem;
+            border-top: 1px dashed rgba(125, 125, 125, 0.22);
+        }
+
+        .section-header-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .links-flex-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .school-card-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.95rem 1.25rem;
+            background: var(--card-item-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .school-card-link:hover {
+            background: var(--card-item-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px -6px rgba(236, 72, 153, 0.25);
+            border-color: rgba(236, 72, 153, 0.5);
+            color: #ec4899;
+        }
+
+        .school-link-left {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .link-mode-tag {
+            font-size: 0.72rem;
+            padding: 0.22rem 0.55rem;
+            border-radius: var(--radius-full);
+            background: rgba(125, 125, 125, 0.1);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .link-icon-arrow {
+            font-size: 1.15rem;
+            transition: transform 0.2s ease;
+        }
+
+        .school-card-link:hover .link-icon-arrow {
+            transform: translateX(3px) translateY(-1px);
+        }
+
+        /* Footer */
+        .profile-footer {
+            margin-top: 2.2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Toast Feedback */
+        .save-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(90px);
+            background: #10b981;
+            color: white;
+            padding: 0.6rem 1.3rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .save-toast.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 680px) {
+            body {
+                padding: 2.5rem 1rem 1.5rem;
+            }
+
+            .profile-container {
+                padding: 2rem 1.25rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-bio {
+                grid-column: span 1;
+            }
+
+            .links-flex-box {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                top: 0.6rem;
+                right: 0.6rem;
+            }
+
+            .profile-title {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ambient Background Glows -->
+    <div class="ambient-glow orb-1"></div>
+    <div class="ambient-glow orb-2"></div>
+    <div class="ambient-glow orb-3"></div>
+
+    <!-- Quick Control Bar -->
+    <div class="top-bar" id="topBar">
+        <button class="btn-action" id="themeToggleBtn" title="切換深色 / 淺色模式">
+            <span id="themeIcon">🌓</span> <span id="themeText">切換主題</span>
+        </button>
+        <button class="btn-action" id="resetBtn" title="重設所有資料為預設內容">
+            <span>↺</span> 重設
+        </button>
+    </div>
+
+    <!-- Main Card Container -->
+    <main class="profile-container" id="mainProfileCard">
+        <!-- Header & Avatar -->
+        <header class="profile-header">
+            <div class="avatar-container" id="avatarWrapper" title="個人頭像 (yee.jpg)">
+                <div class="avatar-glow-ring"></div>
+                <img src="yee.jpg" alt="個人頭像" class="avatar-image" id="userAvatar"
+                    onerror="this.src='data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='136' height='136' viewBox='0 0 24 24' fill='none' stroke='%23ec4899' stroke-width='1.5'><circle cx='12' cy='8' r='5'/><path d='M20 21a8 8 0 1 0-16 0'/></svg>'">
+                <div class="status-dot" title="在線狀態：學習中"></div>
+            </div>
+
+            <h1 class="profile-title" id="mainHeading">個人簡介</h1>
+            <p class="profile-tagline">Personal Profile & Portfolio</p>
+            <div class="edit-tip">
+                <span>✏️</span> 欄位內容點擊即可直接修改編輯，會自動儲存喔！
+            </div>
+        </header>
+
+        <!-- Information Grid (Name, Zodiac, Education, Hobby, Skill, Bio) -->
+        <section class="info-grid" aria-label="個人詳細資訊">
+            <!-- 姓名 (Name) -->
+            <article class="info-card item-name">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">👤</div>
+                    <span class="card-field-name">姓名</span>
+                </div>
+                <div class="card-content-value" id="fieldName" contenteditable="true" spellcheck="false"
+                    data-default="請填寫你的姓名">請填寫你的姓名</div>
+            </article>
+
+            <!-- 星座 (Zodiac) -->
+            <article class="info-card item-zodiac">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">✨</div>
+                    <span class="card-field-name">星座</span>
+                </div>
+                <div class="card-content-value" id="fieldZodiac" contenteditable="true" spellcheck="false"
+                    data-default="天秤座 ♎">天秤座 ♎</div>
+            </article>
+
+            <!-- 學歷 (Education) -->
+            <article class="info-card item-education">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">🎓</div>
+                    <span class="card-field-name">學歷</span>
+                </div>
+                <div class="card-content-value" id="fieldEducation" contenteditable="true" spellcheck="false"
+                    data-default="台南應用科技大學 (就讀中)">台南應用科技大學 (就讀中)</div>
+            </article>
+
+            <!-- 興趣 (Hobby) -->
+            <article class="info-card item-hobby">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">🎨</div>
+                    <span class="card-field-name">興趣</span>
+                </div>
+                <div class="card-content-value" id="fieldHobby" contenteditable="true" spellcheck="false"
+                    data-default="網頁設計、插畫創作、聽音樂、看動漫">網頁設計、插畫創作、聽音樂、看動漫</div>
+            </article>
+
+            <!-- 專長 (Skill) -->
+            <article class="info-card item-skill">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">💻</div>
+                    <span class="card-field-name">專長</span>
+                </div>
+                <div class="card-content-value" id="fieldSkill" contenteditable="true" spellcheck="false"
+                    data-default="HTML / CSS 基礎排版、多媒體設計、視覺美編">HTML / CSS 基礎排版、多媒體設計、視覺美編</div>
+            </article>
+
+            <!-- 自我介紹 (Bio - spans 2 columns) -->
+            <article class="info-card item-bio">
+                <div class="card-header-bar">
+                    <div class="card-icon-badge">📝</div>
+                    <span class="card-field-name">自我介紹</span>
+                </div>
+                <div class="card-content-value" id="fieldBio" contenteditable="true" spellcheck="false"
+                    data-default="你好！我是台南應用科技大學的學生。熱愛探索美感與視覺設計，目前正在認真學習網頁設計與前端排版技術。希望未來能創作出更多兼具美感與實用性、能帶給大家驚喜的優秀作品！歡迎與我交流！">
+                    你好！我是台南應用科技大學的學生。熱愛探索美感與視覺設計，目前正在認真學習網頁設計與前端排版技術。希望未來能創作出更多兼具美感與實用性、能帶給大家驚喜的優秀作品！歡迎與我交流！</div>
+            </article>
+        </section>
+
+        <!-- School Links (Preserving the student's two links: normal and target=_blank) -->
+        <section class="school-links-container" aria-label="相關連結">
+            <div class="section-header-label">
+                <span>🏛️</span> 學校連結資訊 Links
+            </div>
+            <div class="links-flex-box">
+                <!-- Link 1: Same window -->
+                <a href="https://www.tut.edu.tw/" class="school-card-link" id="schoolLinkSelf" title="在當前分頁開啟學校網站">
+                    <div class="school-link-left">
+                        <span>🏫</span>
+                        <div>
+                            <div>台南應用科技大學</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="link-mode-tag">目前分頁</span>
+                        <span class="link-icon-arrow">➔</span>
+                    </div>
+                </a>
+
+                <!-- Link 2: New window target=_blank -->
+                <a href="https://www.tut.edu.tw/" target="_blank" rel="noopener noreferrer" class="school-card-link"
+                    id="schoolLinkBlank" title="在新分頁開啟學校網站">
+                    <div class="school-link-left">
+                        <span>🚀</span>
+                        <div>
+                            <div>台南應用科技大學</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="link-mode-tag">新分頁開啟 ↗</span>
+                        <span class="link-icon-arrow">➔</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="profile-footer">
+            <p>© 2026 個人簡介網頁作業 · 台南應用科技大學</p>
+        </footer>
+    </main>
+
+    <!-- Auto-save Toast Notification -->
+    <div class="save-toast" id="saveToast">
+        <span>✓</span> 內容已自動儲存至瀏覽器！
+    </div>
+
+    <script>
+        // Storage keys & field IDs
+        const FIELD_IDS = ['fieldName', 'fieldZodiac', 'fieldEducation', 'fieldHobby', 'fieldSkill', 'fieldBio'];
+        const STORAGE_PREFIX = 'tut_profile_';
+        const toast = document.getElementById('saveToast');
+        let toastTimeout = null;
+
+        function showToast(msg) {
+            if (msg) toast.innerHTML = `<span>✓</span> ${msg}`;
+            toast.classList.add('visible');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 2200);
+        }
+
+        // Load saved content
+        function loadSavedData() {
+            FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const saved = localStorage.getItem(STORAGE_PREFIX + id);
+                if (saved !== null && saved.trim() !== '') {
+                    el.innerText = saved;
+                }
+            });
+        }
+
+        // Save content on input
+        FIELD_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', () => {
+                localStorage.setItem(STORAGE_PREFIX + id, el.innerText.trim());
+                showToast('已自動儲存變更');
+            });
+        });
+
+        // Theme toggle
+        const themeBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const savedTheme = localStorage.getItem(STORAGE_PREFIX + 'theme') || 'light';
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+            }
+            localStorage.setItem(STORAGE_PREFIX + 'theme', theme);
+        }
+
+        applyTheme(savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(nextTheme);
+        });
+
+        // Reset to default
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.addEventListener('click', () => {
+            if (confirm('確定要恢復為預設範例內容嗎？')) {
+                FIELD_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    el.innerText = el.getAttribute('data-default') || '';
+                    localStorage.removeItem(STORAGE_PREFIX + id);
+                });
+                showToast('已重設為預設內容');
+            }
+        });
+
+        // Interactive 3D tilt on profile card
+        const card = document.getElementById('mainProfileCard');
+        if (window.matchMedia('(pointer: fine)').matches) {
+            document.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+                const xPercent = (clientX / innerWidth - 0.5) * 8;
+                const yPercent = (clientY / innerHeight - 0.5) * 8;
+                card.style.transform = `perspective(1000px) rotateY(${xPercent}deg) rotateX(${-yPercent}deg)`;
+            });
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+            });
+        }
+
+        // Initialize
+        loadSavedData();
+    </script>
+</body>
+
+</html>
